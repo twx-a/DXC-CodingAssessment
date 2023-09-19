@@ -55,7 +55,7 @@ public class CustomCodec {
 	public String decode (String encodedText) {
 		return logicController.decodeText(encodedText);
 	}
-	public Character typeOfEncoding(Character encodeType) {
-		return logicController.encodeType(encodeType);
+	public Character typeOfEncoding(Character codecInput) {
+		return logicController.codecType(codecInput);
 	}
 }
