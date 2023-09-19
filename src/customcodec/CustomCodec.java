@@ -24,11 +24,11 @@ public class CustomCodec {
 				System.out.println("Exiting...");
 				break;
 			}
-			System.out.println("Enter the text:");
-			String text = scanner.nextLine().toUpperCase();
 
 			//encode
 			if ("e".equalsIgnoreCase(userInput)) {
+				System.out.println("Enter the text:");
+				String text = scanner.nextLine().toUpperCase();
 				System.out.println("What is your Encoding type? Pick a letter from A-Z or 0-9 or (-/ ");
 				String encodingInput = scanner.nextLine().toUpperCase();
 				codec.typeOfEncoding(encodingInput.charAt(0));
@@ -37,6 +37,8 @@ public class CustomCodec {
 			}
 			//decode
 			else if ("d".equalsIgnoreCase(userInput)) {
+				System.out.println("Enter the text:");
+				String text = scanner.nextLine().toUpperCase();
 				String decodedText = codec.decode(text.toUpperCase());
 				System.out.println("Decoded text: " + decodedText);
 			}
