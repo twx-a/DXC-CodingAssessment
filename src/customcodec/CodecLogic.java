@@ -3,16 +3,19 @@ package customcodec;
 import java.util.*;
 
 public class CodecLogic {
+
 	//initialize instance
 	private List<Character> refTable;
 	private List<Character> holdingTable;
 	private int shiftingValue;
+	Map<Integer, Character> specialCharTable;
 	//constructor
 	public CodecLogic(){
 		this.refTable = new LinkedList<Character>();
 		initializeRefTable();
 		this.holdingTable = new LinkedList<Character>(this.refTable);
 		this.shiftingValue = 0;
+		this.specialCharTable = new HashMap<>();
 	}
 	
 	public String encodeText(String inputText) {
@@ -21,16 +24,30 @@ public class CodecLogic {
 		List<Integer> indexOfInput = new ArrayList<>();
 		List<Character> outputCharacters = new ArrayList<>();
 		//get index of each character
-		for (Character c : inputCharacters) {
+		for (int i = 0; i<inputCharacters.size(); i++){
 			//for each character in inputCharacters list get the index
+			char c = inputCharacters.get(i);
 			int getIndex = this.refTable.indexOf(c);
-			indexOfInput.add(getIndex);
+			if (getIndex == -1) {
+				specialCharTable.put(i, c);
+				//add so that later i can find it
+				indexOfInput.add(-1);
+			}
+			else {
+				indexOfInput.add(getIndex);					
+			}
 		}
 		encodedRefTable();		
-		for (int i = 0; i<indexOfInput.size(); i++) {
-			int element = indexOfInput.get(i);
-			Character c = this.holdingTable.get(element);
-			outputCharacters.add(c);
+		for (int j = 0; j<indexOfInput.size(); j++) {
+			int element = indexOfInput.get(j);
+			if(element == -1) {
+				char specialC = specialCharTable.get(j);
+				outputCharacters.add(specialC);
+			}
+			else {
+				Character c = this.holdingTable.get(element);
+				outputCharacters.add(c);				
+			}
 		}
 
 		String encodedText = "";
@@ -57,16 +74,29 @@ public class CodecLogic {
 		//remove this to return normal string
 		inputCharacters.remove(0);
 		encodedRefTable();
-		for (Character c : inputCharacters) {
+		for (int i = 0; i<inputCharacters.size(); i++){
 			//for each character in inputCharacters list get the index using TRANSFORMED TABLE
+			char c = inputCharacters.get(i);
 			int getIndex = this.holdingTable.indexOf(c);
-			indexOfInput.add(getIndex);
+			if (getIndex == -1) {
+				specialCharTable.put(i, c);
+				indexOfInput.add(-1);
+			}
+			else {
+				indexOfInput.add(getIndex);				
+			}
 		}
 		
-		for (int i=0; i<indexOfInput.size(); i++) {
-			int element  = indexOfInput.get(i);
-			Character c = this.refTable.get(element);
-			outputCharacters.add(c);
+		for (int j=0; j<indexOfInput.size(); j++) {
+			int element  = indexOfInput.get(j);
+			if (element == -1) {
+				char specialC = specialCharTable.get(j);
+				outputCharacters.add(specialC);
+			}
+			else {
+				Character c = this.refTable.get(element);
+				outputCharacters.add(c);				
+			}
 		}
 		String decodedText = "";
 		for (Character c : outputCharacters) {
