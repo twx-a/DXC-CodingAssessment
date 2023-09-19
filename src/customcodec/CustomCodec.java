@@ -27,18 +27,26 @@ public class CustomCodec {
 
 			//encode
 			if ("e".equalsIgnoreCase(userInput)) {
-				System.out.println("Enter the text:");
-				String text = scanner.nextLine().toUpperCase();
-				System.out.println("What is your Encoding type? Pick a letter from A-Z or 0-9 or (-/ ");
-				String encodingInput = scanner.nextLine().toUpperCase();
-				codec.typeOfEncoding(encodingInput.charAt(0));
-				String encodedText = codec.encode(text);
-				System.out.println("Encoded text: " + encodingInput + encodedText);
+				while(true) {
+					System.out.println("What is your Encoding type? Pick a letter from A-Z or 0-9 or (-/ ");
+					String encodingInput = scanner.nextLine().toUpperCase();
+					codec.logicController.codecType(encodingInput.charAt(0));
+					if(codec.logicController.checkRefTable(encodingInput.charAt(0))) {
+						System.out.println("Enter the text:");
+						String text = scanner.nextLine().toUpperCase().strip();
+						String encodedText = codec.encode(text);
+						System.out.println("Encoded text: " + encodingInput + encodedText);
+						break;
+					}
+					else {
+						System.out.println("Invalid Encoding type. Please try again.");
+					}
+				}
 			}
 			//decode
 			else if ("d".equalsIgnoreCase(userInput)) {
 				System.out.println("Enter the text:");
-				String text = scanner.nextLine().toUpperCase();
+				String text = scanner.nextLine().toUpperCase().strip();
 				String decodedText = codec.decode(text.toUpperCase());
 				System.out.println("Decoded text: " + decodedText);
 			}
@@ -56,8 +64,5 @@ public class CustomCodec {
 	}
 	public String decode (String encodedText) {
 		return logicController.decodeText(encodedText);
-	}
-	public Character typeOfEncoding(Character codecInput) {
-		return logicController.codecType(codecInput);
 	}
 }

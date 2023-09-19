@@ -115,6 +115,10 @@ public class CodecLogic {
 		return codecType;
 	}
 	
+	public boolean checkRefTable(Character c) {
+		return this.refTable.contains(c);
+	}
+	
 	private List<Character> strToChar(String initialString) {
 		List<Character> userCharacters = new ArrayList<>();
 		//convert string to character using for each
